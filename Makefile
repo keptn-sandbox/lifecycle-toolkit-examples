@@ -57,3 +57,16 @@ undeploy-podtatohead:
 .PHONY: uninstall-observability
 uninstall-observability: undeploy-podtatohead
 	make -C support/observability uninstall
+
+.PHONY: port-forward-argocd
+port-forward-argocd:
+	@echo ""
+	@echo "Open ArgoCD in your Browser: http://localhost:8080"
+	@echo "CTRL-c to stop port-forward"
+
+	@echo ""
+	kubectl port-forward svc/argocd-server -n "$(ARGO_NAMESPACE)" 8080:443
+
+.PHONY: argo-get-password
+argo-get-password:
+	@echo $(ARGO_SECRET)

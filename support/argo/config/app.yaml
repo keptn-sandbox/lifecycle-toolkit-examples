@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: https://github.com/keptn-sandbox/keptn-lifecycle-toolkit-examples
     targetRevision: main
-    path: sample-app/version-2
+    path: sample-app/version-1
   destination: 
     server: https://kubernetes.default.svc
     namespace: podtato-kubectl
