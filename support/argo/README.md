@@ -38,7 +38,7 @@ Then you can access the UI using http://localhost:8080.
 ## Installing the Demo Application
 To install the demo application, you can use the following command (apply [this manifest](https://raw.githubusercontent.com/keptn/lifecycle-toolkit/main/examples/argo/config/app.yaml)):
 ```shell
-kubectl apply -f https://raw.githubusercontent.com/keptn/lifecycle-toolkit/main/examples/argo/config/app.yaml
+kubectl apply -f https://raw.githubusercontent.com/keptn-sandbox/lifecycle-toolkit-examples/main/support/argo/config/app.yaml
 ```
 
 You will see that the application will be deployed using ArgoCD. You can watch the progress on the ArgoCD UI and should see the following:
