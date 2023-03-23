@@ -1,14 +1,11 @@
 # renovate: datasource=github-tags depName=jaegertracing/jaeger
-JAEGER_VERSION ?= v1.39.0
-# renovate: datasource=github-tags depName=cert-manager/cert-manager
-CERT_MANAGER_VERSION ?= v1.10.1
+JAEGER_VERSION ?= v1.43.0
 TOOLKIT_NAMESPACE ?= keptn-lifecycle-toolkit-system
 PODTATO_NAMESPACE ?= podtato-kubectl
 GRAFANA_PORT_FORWARD ?= 3000
 
 .PHONY: install
-install:undeploy-podtatohead
-
+install: install-cert-manager
 	@echo "-----------------------------------"
 	@echo "Create Namespace and install Jaeger"
 	@echo "-----------------------------------"
@@ -39,16 +36,6 @@ install:undeploy-podtatohead
 	kubectl wait --for=condition=available deployment/otel-collector -n "$(TOOLKIT_NAMESPACE)" --timeout=120s
 
 	@echo ""
-	@echo "----------------------------------"
-	@echo "Restart Keptn Lifecycle Controller"
-	@echo "----------------------------------"
-	kubectl rollout restart deployment -n "$(TOOLKIT_NAMESPACE)" klc-controller-manager
-	kubectl rollout status deployment -n "$(TOOLKIT_NAMESPACE)" klc-controller-manager --watch
-	kubectl rollout restart deployment -n "$(TOOLKIT_NAMESPACE)" keptn-scheduler -n keptn-lifecycle-toolkit-system
-	kubectl rollout status deployment -n "$(TOOLKIT_NAMESPACE)" keptn-scheduler --watch
-
-
-	@echo ""
 	@echo "------------------"
 	@echo "Install Prometheus"
 	@echo "------------------"
@@ -58,13 +45,20 @@ install:undeploy-podtatohead
 	kubectl wait --for=condition=available deployment/kube-state-metrics -n monitoring --timeout=120s
 	kubectl wait --for=condition=available deployment/grafana -n monitoring --timeout=120s
 
-
 	@echo ""
 	@echo "#######################################################"
 	@echo "Observability Demo installed"
 	@echo "- Install PodTatoHead: make deploy-podtatohead"
 	@echo "- Port-Forward Grafana: make port-forward-grafana"
 	@echo "#######################################################"
+
+.PHONY: install-cert-manager
+install-cert-manager:
+	@echo "-----------------------------------"
+	@echo "Create Namespace and install CertManager"
+	@echo "-----------------------------------"
+	kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.11.0/cert-manager.yaml
+	kubectl wait --for=condition=Available deployment/cert-manager-webhook -n cert-manager --timeout=60s
 
 .PHONY: port-forward-jaeger
 port-forward-jaeger:
@@ -103,7 +97,7 @@ import-grafana-dashboard:
 
 .PHONY: uninstall
 uninstall:
-	kubectl delete -f config/jaeger.yaml -n "$(LFC_NAMESPACE)" --ignore-not-found=true
+	kubectl delete -f config/jaeger.yaml -n "$(TOOLKIT_NAMESPACE)" --ignore-not-found=true
 	kubectl delete -f https://github.com/jaegertracing/jaeger-operator/releases/download/$(JAEGER_VERSION)/jaeger-operator.yaml -n observability --ignore-not-found=true
 	kubectl delete -f config/prometheus/ --ignore-not-found=true
 	kubectl delete -f config/prometheus/setup --ignore-not-found=true

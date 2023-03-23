@@ -1,22 +1,21 @@
 # renovate: datasource=github-tags depName=jaegertracing/jaeger
-JAEGER_VERSION ?= v1.39.0
-LFC_NAMESPACE ?= keptn-lifecycle-controller-system
+JAEGER_VERSION ?= v1.43.0
+TOOLKIT_NAMESPACE ?= keptn-lifecycle-toolkit-system
 PODTATO_NAMESPACE ?= podtato-kubectl
 GRAFANA_PORT_FORWARD ?= 3000
-CERT_MANAGER_VERSION ?= v1.10.1
 
 .PHONY: install
-install:
+install: install-observability install-argo
 	@echo "-----------------------------------"
 	@echo "Create Namespace and install Keptn-lifecycle-toolkit"
 	@echo "-----------------------------------"
-	kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/$(CERT_MANAGER_VERSION)/cert-manager.yaml
-	kubectl wait --for=condition=available deployment/cert-manager-webhook -n cert-manager --timeout=300s
-	kubectl apply -f https://github.com/keptn/lifecycle-toolkit/releases/download/v0.4.1/manifest.yaml #x-release-please-version
-	kubectl wait --for=condition=available deployment/klc-controller-manager -n keptn-lifecycle-toolkit-system --timeout=300s
+	helm repo add klt https://charts.lifecycle.keptn.sh
+	helm repo update
+	helm upgrade --install keptn klt/klt -n keptn-lifecycle-toolkit-system --create-namespace --wait
 
 .PHONY: install-observability
 install-observability:
+	kubectl create namespace $(TOOLKIT_NAMESPACE) --dry-run=client -o yaml | kubectl apply -f -
 	make -C support/observability install
 
 .PHONY: install-argo
@@ -70,3 +69,15 @@ port-forward-argocd:
 .PHONY: argo-get-password
 argo-get-password:
 	@echo $(ARGO_SECRET)
+
+.PHONY: restart-lifecycle-toolkit
+restart-lifecycle-toolkit:
+	@echo ""
+	@echo "----------------------------------"
+	@echo "Restart Keptn Lifecycle Controller"
+	@echo "----------------------------------"
+	kubectl rollout restart deployment -n "$(TOOLKIT_NAMESPACE)" lifecycle-operator
+	kubectl rollout status deployment -n "$(TOOLKIT_NAMESPACE)" lifecycle-operator --watch
+	kubectl rollout restart deployment -n "$(TOOLKIT_NAMESPACE)" scheduler -n keptn-lifecycle-toolkit-system
+	kubectl rollout status deployment -n "$(TOOLKIT_NAMESPACE)" scheduler --watch
+

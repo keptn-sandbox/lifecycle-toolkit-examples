@@ -27,7 +27,7 @@ data:
       "editable": true,
       "fiscalYearStartMonth": 0,
       "graphTooltip": 0,
-      "id": 21,
+      "id": 26,
       "links": [],
       "liveNow": false,
       "panels": [
@@ -39,20 +39,16 @@ data:
           "fieldConfig": {
             "defaults": {
               "color": {
-                "mode": "thresholds"
+                "fixedColor": "green",
+                "mode": "fixed"
               },
               "mappings": [],
-              "noValue": "0",
               "thresholds": {
                 "mode": "absolute",
                 "steps": [
                   {
                     "color": "green",
                     "value": null
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
                   }
                 ]
               }
@@ -61,7 +57,7 @@ data:
           },
           "gridPos": {
             "h": 6,
-            "w": 5,
+            "w": 2,
             "x": 0,
             "y": 0
           },
@@ -91,7 +87,7 @@ data:
                 "uid": "P1809F7CD0C75ACF3"
               },
               "editorMode": "builder",
-              "expr": "keptn_app_count{keptn_deployment_app_status=\"Succeeded\", keptn_deployment_app_name=\"$Application\"}",
+              "expr": "keptn_app_count_total{keptn_deployment_app_status=\"Succeeded\", keptn_deployment_app_name=\"$Application\"}",
               "format": "table",
               "legendFormat": "__auto",
               "range": true,
@@ -151,7 +147,7 @@ data:
           "gridPos": {
             "h": 6,
             "w": 8,
-            "x": 5,
+            "x": 2,
             "y": 0
           },
           "id": 4,
@@ -192,20 +188,16 @@ data:
           "fieldConfig": {
             "defaults": {
               "color": {
-                "mode": "thresholds"
+                "fixedColor": "red",
+                "mode": "fixed"
               },
               "mappings": [],
-              "noValue": "0",
               "thresholds": {
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
-                  },
-                  {
                     "color": "red",
-                    "value": 80
+                    "value": null
                   }
                 ]
               }
@@ -214,8 +206,8 @@ data:
           },
           "gridPos": {
             "h": 6,
-            "w": 5,
-            "x": 13,
+            "w": 2,
+            "x": 10,
             "y": 0
           },
           "id": 3,
@@ -244,7 +236,7 @@ data:
                 "uid": "P1809F7CD0C75ACF3"
               },
               "editorMode": "builder",
-              "expr": "keptn_app_count{keptn_deployment_app_status=\"Failed\", keptn_deployment_app_name=\"$Application\"}",
+              "expr": "keptn_app_count_total{keptn_deployment_app_status=\"Failed\", keptn_deployment_app_name=\"$Application\"}",
               "format": "table",
               "legendFormat": "__auto",
               "range": true,
@@ -305,7 +297,7 @@ data:
           },
           "gridPos": {
             "h": 6,
-            "w": 5,
+            "w": 2,
             "x": 0,
             "y": 6
           },
@@ -378,7 +370,7 @@ data:
           "gridPos": {
             "h": 6,
             "w": 8,
-            "x": 5,
+            "x": 2,
             "y": 6
           },
           "id": 16,
@@ -441,11 +433,11 @@ data:
           },
           "gridPos": {
             "h": 6,
-            "w": 5,
-            "x": 13,
+            "w": 2,
+            "x": 10,
             "y": 6
           },
-          "id": null,
+          "id": 14,
           "options": {
             "displayMode": "gradient",
             "minVizHeight": 10,
@@ -536,8 +528,8 @@ data:
             "overrides": []
           },
           "gridPos": {
-            "h": 7,
-            "w": 18,
+            "h": 8,
+            "w": 12,
             "x": 0,
             "y": 12
           },
@@ -606,9 +598,9 @@ data:
           },
           "gridPos": {
             "h": 7,
-            "w": 13,
+            "w": 9,
             "x": 0,
-            "y": 19
+            "y": 20
           },
           "id": 8,
           "options": {
@@ -631,7 +623,7 @@ data:
               "operation": "AppPreDeployTasks",
               "queryType": "search",
               "refId": "A",
-              "service": "keptn-lifecycle-operator",
+              "service": "lifecycle-operator",
               "tags": "keptn.deployment.app.name=$Application"
             }
           ],
@@ -685,9 +677,9 @@ data:
           },
           "gridPos": {
             "h": 7,
-            "w": 5,
-            "x": 13,
-            "y": 19
+            "w": 3,
+            "x": 9,
+            "y": 20
           },
           "id": 21,
           "options": {
@@ -797,7 +789,7 @@ data:
         ]
       },
       "time": {
-        "from": "now-15m",
+        "from": "now-24h",
         "to": "now"
       },
       "timepicker": {},
