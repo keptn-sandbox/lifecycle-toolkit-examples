@@ -107,10 +107,10 @@ spec:
           name: otel-collector
           resources:
             limits:
-              cpu: 1
+              cpu: 400m
               memory: 2Gi
             requests:
-              cpu: 200m
+              cpu: 75m
               memory: 400Mi
           ports:
             - containerPort: 4317 # Default endpoint for otlp receiver.
