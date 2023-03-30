@@ -12,15 +12,20 @@ data:
         },
         "httpResponse": {
           "body": {
-            "result": [{
-              "metric": {
-               "__name__" : "metric-name",
-               "job" : "",
-               "instance" : ""
-              },
-              "value":     "4",
-              "timestamp":      ""
-            }]
+            "status": "success",
+            "data": {
+              "resultType": "vector",
+              "result": [
+                {
+                  "metric": {
+                    "__name__": "metric-name",
+                    "job": "",
+                    "instance": ""
+                  },
+                  "value": [1669714193.275, "4"]
+                }
+              ]
+            }
           },
           "statusCode": 200
         }
