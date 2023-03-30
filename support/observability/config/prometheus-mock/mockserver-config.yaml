@@ -8,7 +8,7 @@ data:
       {
         "httpRequest": {
           "path": "/api/v1/query",
-          "method": "GET"
+          "method": "POST"
         },
         "httpResponse": {
           "body": {
