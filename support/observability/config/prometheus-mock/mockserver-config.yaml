@@ -24,7 +24,7 @@ data:
           },
           "statusCode": 200
         }
-      },
+      }
     ]
   mockserver.properties: |-
     ###############################
