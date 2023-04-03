@@ -49,7 +49,7 @@ install: install-cert-manager
 	@echo "------------------"
 	@echo "Install Prometheus Mockserver"
 	@echo "------------------"
-	kubectl apply -f config/prometheus-mock/mockserver-config.yaml
+	kubectl apply -n "$(TOOLKIT_NAMESPACE)" -f config/prometheus-mock/mockserver-config.yaml
 	helm repo add mockserver "https://www.mock-server.com"
 	helm upgrade --install -n "$(TOOLKIT_NAMESPACE)" --version 5.13.0 mockserver mockserver/mockserver --set service.type=ClusterIP --wait
 
