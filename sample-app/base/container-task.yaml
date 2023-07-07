@@ -2,10 +2,11 @@ apiVersion: lifecycle.keptn.sh/v1alpha3
 kind: KeptnTaskDefinition
 metadata:
   name: container-sleep
+  namespace: podtato-kubectl
 spec:
   container:
     name: testy-test
-    image: busybox:1.36.0
+    image: busybox:1.36.1
     command:
       - 'sh'
       - '-c'
